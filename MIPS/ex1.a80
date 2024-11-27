@@ -1,0 +1,40 @@
+# EX 1) Leia um número inteiro e, se for maior que zero, imprima o dobro.
+
+
+.text
+	.globl	main
+main:
+	li	$v0,4		//primeiramente printa a mensagem
+	la	$a0, msg	
+	syscall
+	
+	li $v0, 5   //leitura de um inteiro
+    syscall
+
+    move $t0,$v0	 //move o valor lido para t0
+
+    li $v0, 1   //printa o valor lido
+	move $a0, $t0
+	syscall
+	
+	li $t1, 2
+    div $t0, $t1
+    mfhi $t2 //resto, se tiver resto >0 é impar (Move From Hi)
+    
+    beq $t2,$zero,even  //se for 0 é par, se for diferente de 0 é impar
+    j end
+
+even:
+    mult $t0, $t1
+    mflo $t1 // (Move From Lo)
+    move $a0, $t1 
+    li $v0, 1  
+    syscall
+    
+end:	
+	li	$v0,10		
+	syscall
+
+	.data
+msg:	.asciiz	"digita essa desgraca\n"
+
